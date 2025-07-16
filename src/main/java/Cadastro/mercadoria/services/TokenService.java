@@ -27,7 +27,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("auth-api") // Nome de quem criou essa secret
-                    .withSubject(user.getLogin())
+                    .withSubject(user.getUsername())
                     .withClaim("roles", user.getAuthorities().stream() // Pega a Collection<GrantedAuthority>
                             .map(GrantedAuthority::getAuthority) // Mapeia cada GrantedAuthority para sua String (ex:
                                                                  // "ROLE_ADMIN")

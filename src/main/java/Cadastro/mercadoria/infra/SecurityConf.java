@@ -36,6 +36,9 @@ public class SecurityConf {
                         .requestMatchers(HttpMethod.GET, "/produtos/buscar/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/produtos/listar").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/produtos/deletar/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

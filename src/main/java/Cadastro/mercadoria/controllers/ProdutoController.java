@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import Cadastro.mercadoria.DTOs.ProdutoDTO;
 import Cadastro.mercadoria.models.Produto;
 import Cadastro.mercadoria.services.ProdutoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/produtos")
+@Tag(name = "Produtos", description = "Operações relacionadas a produtos")
 public class ProdutoController {
 
     @Autowired
@@ -30,6 +33,7 @@ public class ProdutoController {
         return "Funcionou";
     }
 
+    @Operation(summary = "Criar um novo produto", description = "Cria um novo produto com os dados fornecidos")
     @PostMapping("/inserir")
     public ResponseEntity<?> criarProduto(@RequestBody ProdutoDTO produtoDTO) {
         try {

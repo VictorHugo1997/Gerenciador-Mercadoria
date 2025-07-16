@@ -14,6 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProdutoDTO {
+
     @NotBlank(message = "O nome do produto é obrigatório.")
     private String nome;
 
