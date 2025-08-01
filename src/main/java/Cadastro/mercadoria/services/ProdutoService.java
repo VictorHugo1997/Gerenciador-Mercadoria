@@ -13,8 +13,8 @@ import Cadastro.mercadoria.repositories.ProdutoRepository;
 @Service
 public class ProdutoService {
 
-    @Autowired
     private ProdutoRepository produtoRepository;
+    private final RabbitMQService rabbitMQService;
 
     /**
      * Para receber imagem no produto, precisa implemtar o FileStorageService
@@ -29,6 +29,12 @@ public class ProdutoService {
      *            this.fileStorageService = fileStorageService;
      *            }
      */
+
+    @Autowired
+    public ProdutoService(ProdutoRepository produtoRepository, RabbitMQService rabbitMQService) {
+        this.produtoRepository = produtoRepository;
+        this.rabbitMQService = rabbitMQService;
+    }
 
     public Produto salvarProduto(ProdutoDTO produtoDTO) {
         if (produtoRepository.existsByNome(produtoDTO.getNome())) {
@@ -67,7 +73,12 @@ public class ProdutoService {
         produto.setDescricao(produtoDTO.getDescricao());
         produto.setQuantidade(produtoDTO.getQuantidade());
 
-        return produtoRepository.save(produto);
+        Produto produtoAtualizado = produtoRepository.save(produto);
+
+        if (produtoAtualizado.getQuantidade() <= 0) {
+            rabbitMQService.sendStockZeroMessage(produtoAtualizado.getNome());
+        }
+        return produtoAtualizado;
     }
 
     public Produto buscarProduto(String id) {
